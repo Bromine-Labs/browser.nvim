@@ -1,0 +1,97 @@
+---
+---
+
+<div class="flex items-center bg-surface0 border-b border-surface1">
+  <div id="tabs" class="flex-1 flex overflow-x-auto scrollbar-hide"></div>
+</div>
+
+<script is:inline async defer>
+  let tabs = []
+  const tabsDiv = document.getElementById("tabs")
+
+  function updateTabs() {
+    tabs.forEach((tabData, index) => {
+      const titleSpan = tabData.element.querySelector(".tab")
+      if (titleSpan) {
+        titleSpan.textContent = `${index + 1}: ${tabData.title}`
+      }
+    })
+  }
+
+  function createTab(id, title = "New Tab") {
+    const tab = document.createElement("div")
+    tab.className =
+      "flex items-center min-w-0 max-w-xs px-4 py-2 border-r border-surface1 cursor-pointer"
+    tab.dataset.tabId = id
+
+    const titleSpan = document.createElement("span")
+    titleSpan.className = "tab truncate flex-1"
+
+    tab.appendChild(titleSpan)
+
+    tab.onclick = () => {
+      if (window.switchTab) {
+        window.switchTab(id)
+      }
+    }
+
+    tabsDiv.appendChild(tab)
+    const tabData = { id, element: tab, title }
+    tabs.push(tabData)
+    updateTabs()
+
+    return tabData
+  }
+
+  function syncUI(activeId) {
+    document.querySelectorAll("[data-tab-id]").forEach((tab) => {
+      const isActive = parseInt(tab.dataset.tabId) === activeId
+      tab.classList.toggle("bg-surface1", isActive)
+      tab.classList.toggle("text-text", isActive)
+      tab.classList.toggle("active", isActive)
+    })
+  }
+
+  document.addEventListener("new-tab", (e) => {
+    const tabId = e.detail.tabNumber
+    if (!tabs.some((tab) => tab.id === tabId)) {
+      createTab(tabId, "New Tab")
+    }
+    syncUI(tabId)
+  })
+
+  document.addEventListener("switch-tab", (e) => {
+    const tabId = e.detail.tabNumber
+    syncUI(tabId)
+  })
+
+  document.addEventListener("close-tab", (e) => {
+    const tabId = e.detail.tabNumber
+    const tabIndex = tabs.findIndex((tab) => tab.id === tabId)
+    if (tabIndex !== -1) {
+      tabs[tabIndex].element.remove()
+      tabs.splice(tabIndex, 1)
+      updateTabs()
+    }
+  })
+</script>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  [data-tab-id] {
+    color: var(--color-subtle);
+  }
+
+  [data-tab-id].active {
+    color: var(--color-text);
+    background-color: var(--color-surface1);
+  }
+</style>
