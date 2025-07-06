@@ -1,5 +1,15 @@
+
 ---
 import "../styles.css";
+// shut up this isnt ai i just couldnt think of a good name
+import commandsData from '../commands.json';
+
+interface Command {
+  command: string;
+  description: string;
+}
+
+const commands: Command[] = commandsData as Command[];
 ---
 
 <html lang="en">
@@ -7,58 +17,67 @@ import "../styles.css";
     <title>Help - Browser.nvim</title>
   </head>
 
-  <body class="bg-base text-text p-6 overflow-hidden">
+  <body class="bg-base text-text p-6 overflow-hidden rounded-lg shadow-lg">
 
     <h1 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-200">Help Manual</h1>
     <p class="mb-6">This is the help manual for the browser. It provides a quick reference for common commands to help you navigate and control your browsing experience efficiently.</p>
 
     <h2 class="text-2xl font-semibold mb-4 mt-6">Commands</h2>
     <ul class="list-none p-0">
+      {commands.map((cmd) => (
         <li class="mb-2 flex items-baseline">
-            <strong class="mr-2 min-w-[100px] inline-block">:newtab</strong>
-            <span class="">- Open a new tab</span>
+          <strong class="mr-2 min-w-[100px] inline-block">{cmd.command}</strong>
+          <span class="">- {cmd.description}</span>
         </li>
-        <li class="mb-2 flex items-baseline">
-            <strong class="mr-2 min-w-[100px] inline-block">:closetab</strong>
-            <span class="">- Close the current tab</span>
-        </li>
-        <li class="mb-2 flex items-baseline">
-            <strong class="mr-2 min-w-[100px] inline-block">:back</strong>
-            <span class="">- Go back in history</span>
-        </li>
-        <li class="mb-2 flex items-baseline">
-            <strong class="mr-2 min-w-[100px] inline-block">:forward</strong>
-            <span class="">- Go forward in history</span>
-        </li>
-        <li class="mb-2 flex items-baseline">
-            <strong class="mr-2 min-w-[100px] inline-block">:reload</strong>
-            <span class="">- Reload the page</span>
-        </li>
-        <li class="mb-2 flex items-baseline">
-            <strong class="mr-2 min-w-[100px] inline-block">:help</strong>
-            <span class="">- Open this help manual</span>
-        </li>
+      ))}
     </ul>
-
-  
-    <!---->
-    <!-- <h1>Help Manual</h1> -->
-    <!---->
-    <!---->
-    <!---->
-    <!-- <p>This is the help manual for the browser. It provides a quick reference for common commands to help you navigate and control your browsing experience efficiently.</p> -->
-    <!---->
-    <!-- <h2>Commands</h2> -->
-    <!-- <ul> -->
-    <!--     <li><strong>:newtab</strong>: Open a new tab</li> -->
-    <!--     <li><strong>:closetab</strong>: Close the current tab</li> -->
-    <!--     <li><strong>:back</strong>: Go back in history</li> -->
-    <!--     <li><strong>:forward</strong>: Go forward in history</li> -->
-    <!--     <li><strong>:reload</strong>: Reload the page</li> -->
-    <!--     <li><strong>:help</strong>: Open this help manual</li> -->
-    <!-- </ul> -->
-
 
   </body>
 </html>
+<!---->
+<!-- --- -->
+<!-- import "../styles.css"; -->
+<!-- --- -->
+<!---->
+<!-- <html lang="en"> -->
+<!--   <head> -->
+<!--     <title>Help - Browser.nvim</title> -->
+<!--   </head> -->
+<!---->
+<!--   <body class="bg-base text-text p-6 overflow-hidden"> -->
+<!---->
+<!--     <h1 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-200">Help Manual</h1> -->
+<!--     <p class="mb-6">This is the help manual for the browser. It provides a quick reference for common commands to help you navigate and control your browsing experience efficiently.</p> -->
+<!---->
+<!--     <h2 class="text-2xl font-semibold mb-4 mt-6">Commands</h2> -->
+<!--     <ul class="list-none p-0"> -->
+<!--         <li class="mb-2 flex items-baseline"> -->
+<!--             <strong class="mr-2 min-w-[100px] inline-block">:newtab</strong> -->
+<!--             <span class="">- Open a new tab</span> -->
+<!--         </li> -->
+<!--         <li class="mb-2 flex items-baseline"> -->
+<!--             <strong class="mr-2 min-w-[100px] inline-block">:closetab</strong> -->
+<!--             <span class="">- Close the current tab</span> -->
+<!--         </li> -->
+<!--         <li class="mb-2 flex items-baseline"> -->
+<!--             <strong class="mr-2 min-w-[100px] inline-block">:back</strong> -->
+<!--             <span class="">- Go back in history</span> -->
+<!--         </li> -->
+<!--         <li class="mb-2 flex items-baseline"> -->
+<!--             <strong class="mr-2 min-w-[100px] inline-block">:forward</strong> -->
+<!--             <span class="">- Go forward in history</span> -->
+<!--         </li> -->
+<!--         <li class="mb-2 flex items-baseline"> -->
+<!--             <strong class="mr-2 min-w-[100px] inline-block">:reload</strong> -->
+<!--             <span class="">- Reload the page</span> -->
+<!--         </li> -->
+<!--         <li class="mb-2 flex items-baseline"> -->
+<!--             <strong class="mr-2 min-w-[100px] inline-block">:help</strong> -->
+<!--             <span class="">- Open this help manual</span> -->
+<!--         </li> -->
+<!--     </ul> -->
+<!---->
+<!---->
+<!--   </body> -->
+<!-- </html> -->
 

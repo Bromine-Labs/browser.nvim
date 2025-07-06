@@ -56,66 +56,121 @@ import "../styles.css";
 
 
   // --- EVENTS ---
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
 
-    switch (addressInput.value) {
-      case ":back":
-        currentFrame.contentWindow.history.back();
-        break;
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-      case ":forward":
-        currentFrame.contentWindow.history.forward();
-        break;
+  const address = addressInput.value;
+  const searchEngines = {
+    ":search brave": "https://search.brave.com/search?q=%s",
+    ":search google": "https://www.google.com/search?q=%s",
+    ":search ddg": "https://duckduckgo.com/?q=%s",
+  };
 
-      case ":reload":
-        currentFrame.contentWindow.location.reload();
-        break;
+  const proxies = {
+    ":setProxy scram": "scram",
+    ":setProxy uv": "uv",
+  };
 
-      case ":newtab":
-        newTab();
-        break;
+  if (address.startsWith(":setWisp ")) {
+    wisp = address.substring(9);
+    setWisp(address.substring(9));
+    localStorage.setItem("wisp-server", address.substring(9));
+    alert(`Wisp server set to: ${wisp}`);
+    return;
+  }
 
-      case ":help":
-        if (localStorage.getItem("stealth-mode")) {
-          currentFrame.contentWindow.location.replace("/help");
-        } else {
-          currentFrame.src = "/help";
-        }
-        break;
+  if (address.startsWith(":setTransport ")) {
+    transport = address.substring(14);
+    setWisp(address.substring(14));
+    localStorage.setItem("proxy-transport", address.substring(14));
+    alert(`Transport set to: ${transport}`);
+    return;
+  }
 
-      default:
-        const urlToLoad = makeURL(addressInput.value, search);
-        const proxiedUrl = await getProxied(urlToLoad);
-        if (localStorage.getItem("stealth-mode")) {
-          currentFrame.contentWindow.location.replace(proxiedUrl);
-        } else {
-          currentFrame.src = proxiedUrl;
-        }
-        addressInput.value = urlToLoad;
-        break;
+  if (address.startsWith(":switchTab ")) {
+    const tabNumber = parseInt(address.substring(12));
+    if (isNaN(tabNumber) === false) {
+      switchTab(tabNumber);
+    } else {
+      alert("Invalid tab number");
     }
-  });
+    return;
+  }
 
+  if (searchEngines[address]) {
+    search = searchEngines[address];
+    localStorage.setItem("search-engine", searchEngines[address]);
+    alert(`Search engine set to: ${searchEngines[address]}`);
+    return;
+  }
 
-  window.addEventListener("search-engine-changed", () => {
-    search = localStorage.getItem("search-engine")
-  })
+  if (proxies[address]) {
+    setProxy(proxies[address]);
+    backend = proxies[address];
+    localStorage.setItem("proxy-backend", proxies[address]);
+    alert(`Proxy backend set to: ${proxies[address]}`);
+    return;
+  }
 
-  window.addEventListener("proxy-backend-changed", () => {
-    backend = localStorage.getItem("proxy-backend")
-    setProxy(localStorage.getItem("proxy-backend"))
-  })
+  switch (address) {
+    case ":getWisp":
+      alert(`Current Wisp server: ${wisp}`);
+      break;
 
-  window.addEventListener("wisp-server-changed", () => {
-    wisp = localStorage.getItem("wisp-server")
-    setWisp(localStorage.getItem("wisp-server"))
-  })
+    case ":getTransport":
+      alert(`Current Transport: ${transport}`);
+      break;
 
-  window.addEventListener("proxy-transport-changed", () => {
-    transport = localStorage.getItem("proxy-transport")
-    setTransport(localStorage.getItem("proxy-transport"))
-  })
+    case ":getProxy":
+      alert(`Current Proxy Backend: ${backend}`);
+      break;
+
+    case ":back":
+      currentFrame.contentWindow.history.back();
+      break;
+
+    case ":forward":
+      currentFrame.contentWindow.history.forward();
+      break;
+
+    case ":reload":
+      currentFrame.contentWindow.location.reload();
+      break;
+
+    case ":newtab":
+      newTab();
+      break;
+
+    case ":closetab":
+      closeTab(currentTab);
+      break;
+
+    case ":stealthmode":
+      alert("you found a secret command! Stealth mode is now enabled.");
+      localStorage.setItem("stealth-mode", "true");
+      break;
+
+    case ":help":
+      if (localStorage.getItem("stealth-mode")) {
+        currentFrame.contentWindow.location.replace("/help");
+      } else {
+        currentFrame.src = "/help";
+      }
+      break;
+
+    default:
+      const urlToLoad = makeURL(address, search);
+      const proxiedUrl = await getProxied(urlToLoad);
+      if (localStorage.getItem("stealth-mode")) {
+        currentFrame.contentWindow.location.replace(proxiedUrl);
+      } else {
+        currentFrame.src = proxiedUrl;
+      }
+      addressInput.value = urlToLoad;
+      break;
+  }
+});
 
   // --- UTILITIES ---
   async function newTab() {

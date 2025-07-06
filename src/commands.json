@@ -1,0 +1,54 @@
+[
+  {
+    "command": ":newtab",
+    "description": "Open a new tab"
+  },
+  {
+    "command": ":switchTab <number>",
+    "description": "Switch to the tab with the given number"
+  },
+  {
+    "command": ":closetab",
+    "description": "Close the current tab"
+  },
+  {
+    "command": ":back",
+    "description": "Go back in history"
+  },
+  {
+    "command": ":forward",
+    "description": "Go forward in history"
+  },
+  {
+    "command": ":reload",
+    "description": "Reload the page"
+  },
+  {
+    "command": ":setProxy ...",
+    "description": "Set the proxy backend to one of 'uv' or 'scram'"
+  },
+  {
+    "command": ":setTransport ...",
+    "description": "Set the proxy transport to one of 'epoxy' or 'libcurl'"
+  },
+  {
+    "command": ":setWisp ...",
+    "description": "Set the wisp server to a wisp server that is (hopefully) valid."
+  },
+  {
+    "command": ":getProxy ...",
+    "description": "Fetches the current proxy backend, which is either 'uv' or 'scram'"
+  },
+  {
+    "command": ":getTransport ...", 
+    "description": "Feteches the current proxy transport, which is either 'epoxy' or 'libcurl'"
+  },
+  {
+    "command": ":getWisp <wisp-server uri>", 
+    "description": "Fetches the current wisp server."
+  },
+  {
+    "command": ":help",
+    "description": "Auto-magically sends you to this help manual"
+  }
+]
