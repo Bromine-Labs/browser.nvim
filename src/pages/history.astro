@@ -1,0 +1,78 @@
+---
+import "../styles.css";
+---
+
+<html lang="en">
+  <head>
+    <title>History</title>
+    <script is:inline defer>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.dataset.theme = localStorage.getItem("theme");
+      });
+      window.addEventListener("theme-changed", () => {
+        document.body.dataset.theme = localStorage.getItem("theme");
+      });
+    </script>
+  </head>
+  <body class="bg-base text-text h-screen w-screen overflow-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">History</h1>
+    <div class="flex justify-between items-center mb-4">
+      <input type="text" id="search" placeholder="Search history..." class="w-full p-2 rounded-md bg-surface text-text focus:outline-none">
+      <button id="clear" class="ml-4 p-2 rounded-md bg-surface text-love">Clear History</button>
+    </div>
+    <ul id="history" class="space-y-2"></ul>
+
+    <script is:inline>
+      const historyList = document.getElementById('history');
+      const search = document.getElementById('search');
+      const clear = document.getElementById('clear');
+      let history = JSON.parse(localStorage.getItem('history')) || [];
+
+      function renderHistory(filter = '') {
+        historyList.innerHTML = '';
+        const filteredHistory = history.filter(item => item.title.toLowerCase().includes(filter.toLowerCase()) || item.url.toLowerCase().includes(filter.toLowerCase()));
+
+        if (filteredHistory.length > 0) {
+          const groupedHistory = filteredHistory.reduce((acc, item) => {
+            const date = new Date(item.timestamp).toLocaleDateString();
+            if (!acc[date]) {
+              acc[date] = [];
+            }
+            acc[date].push(item);
+            return acc;
+          }, {});
+
+          for (const date in groupedHistory) {
+            const group = document.createElement('div');
+            const datee = document.createElement('h2');
+            datee.className = 'text-xl font-bold mt-4';
+            datee.textContent = date;
+            group.appendChild(datee);
+
+            groupedHistory[date].forEach(item => {
+              const li = document.createElement('li');
+              li.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${item.url}" class="w-4 h-4 inline-block mr-2"><a href="${item.url}" class="text-foam hover:underline">${item.title}</a><br><span class="text-sm text-highlight-high ml-6">${item.url} - ${new Date(item.timestamp).toLocaleTimeString()}</span>`;
+        
+              group.appendChild(li);
+            });
+            historyList.appendChild(group);
+          }
+        } else {
+          historyList.innerHTML = '<li>No history found.</li>';
+        }
+      }
+
+      search.addEventListener('input', (e) => {
+        renderHistory(e.target.value);
+      });
+
+      clear.addEventListener('click', () => {
+        localStorage.removeItem('history');
+        history = [];
+        renderHistory();
+      });
+
+      renderHistory();
+    </script>
+  </body>
+</html>

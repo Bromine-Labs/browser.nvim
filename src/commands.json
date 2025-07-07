@@ -20,8 +20,16 @@
     "description": "Go forward in history"
   },
   {
+    "command": ":history",
+    "description": "Show's browser history"
+  },
+  {
     "command": ":reload",
     "description": "Reload the page"
+  },
+  {
+    "command": "setTheme <theme>",
+    "description": "Set's the theme!"
   },
   {
     "command": ":setProxy ...",
@@ -44,8 +52,16 @@
     "description": "Feteches the current proxy transport, which is either 'epoxy' or 'libcurl'"
   },
   {
-    "command": ":getWisp <wisp-server uri>", 
+    "command": ":getWisp", 
     "description": "Fetches the current wisp server."
+  },
+  {
+    "command": ":getTheme", 
+    "description": "Fetches the current theme."
+  },
+  {
+    "command": ":aboutblank",
+    "description": "Toggles about blank on/off"
   },
   {
     "command": ":help",

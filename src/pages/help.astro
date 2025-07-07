@@ -15,12 +15,20 @@ const commands: Command[] = commandsData as Command[];
 <html lang="en">
   <head>
     <title>Help - Browser.nvim</title>
+    <script is:inline defer>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.dataset.theme = localStorage.getItem("theme");
+      });
+      window.addEventListener("theme-changed", () => {
+        document.body.dataset.theme = localStorage.getItem("theme");
+      });
+    </script>
   </head>
 
   <body class="bg-base text-text p-6 overflow-hidden rounded-lg shadow-lg">
 
     <h1 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-200">Help Manual</h1>
-    <p class="mb-6">This is the help manual for the browser. It provides a quick reference for common commands to help you navigate and control your browsing experience efficiently.</p>
+    <p class="mb-6">This is the help manual for browser.nvim, a unique web proxy with a little twist made for the 2025 Nebula proxathon.</p>
 
     <h2 class="text-2xl font-semibold mb-4 mt-6">Commands</h2>
     <ul class="list-none p-0">
@@ -34,50 +42,4 @@ const commands: Command[] = commandsData as Command[];
 
   </body>
 </html>
-<!---->
-<!-- --- -->
-<!-- import "../styles.css"; -->
-<!-- --- -->
-<!---->
-<!-- <html lang="en"> -->
-<!--   <head> -->
-<!--     <title>Help - Browser.nvim</title> -->
-<!--   </head> -->
-<!---->
-<!--   <body class="bg-base text-text p-6 overflow-hidden"> -->
-<!---->
-<!--     <h1 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-200">Help Manual</h1> -->
-<!--     <p class="mb-6">This is the help manual for the browser. It provides a quick reference for common commands to help you navigate and control your browsing experience efficiently.</p> -->
-<!---->
-<!--     <h2 class="text-2xl font-semibold mb-4 mt-6">Commands</h2> -->
-<!--     <ul class="list-none p-0"> -->
-<!--         <li class="mb-2 flex items-baseline"> -->
-<!--             <strong class="mr-2 min-w-[100px] inline-block">:newtab</strong> -->
-<!--             <span class="">- Open a new tab</span> -->
-<!--         </li> -->
-<!--         <li class="mb-2 flex items-baseline"> -->
-<!--             <strong class="mr-2 min-w-[100px] inline-block">:closetab</strong> -->
-<!--             <span class="">- Close the current tab</span> -->
-<!--         </li> -->
-<!--         <li class="mb-2 flex items-baseline"> -->
-<!--             <strong class="mr-2 min-w-[100px] inline-block">:back</strong> -->
-<!--             <span class="">- Go back in history</span> -->
-<!--         </li> -->
-<!--         <li class="mb-2 flex items-baseline"> -->
-<!--             <strong class="mr-2 min-w-[100px] inline-block">:forward</strong> -->
-<!--             <span class="">- Go forward in history</span> -->
-<!--         </li> -->
-<!--         <li class="mb-2 flex items-baseline"> -->
-<!--             <strong class="mr-2 min-w-[100px] inline-block">:reload</strong> -->
-<!--             <span class="">- Reload the page</span> -->
-<!--         </li> -->
-<!--         <li class="mb-2 flex items-baseline"> -->
-<!--             <strong class="mr-2 min-w-[100px] inline-block">:help</strong> -->
-<!--             <span class="">- Open this help manual</span> -->
-<!--         </li> -->
-<!--     </ul> -->
-<!---->
-<!---->
-<!--   </body> -->
-<!-- </html> -->
 

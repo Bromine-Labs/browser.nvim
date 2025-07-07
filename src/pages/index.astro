@@ -6,6 +6,14 @@ import "../styles.css";
 <html lang="en">
   <head>
     <title>Browser.nvim</title>
+    <script is:inline defer>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.dataset.theme = localStorage.getItem("theme");
+      });
+      window.addEventListener("theme-changed", () => {
+        document.body.dataset.theme = localStorage.getItem("theme");
+      });
+    </script>
   </head>
   <body class="bg-base text-text h-screen w-screen overflow-hidden">
     <Tabs/>
@@ -24,6 +32,62 @@ import "../styles.css";
       </form>
 
 <script is:inline defer type="module">
+let inFrame;
+
+try {
+  inFrame = window !== top;
+} catch (e) {
+  inFrame = true;
+}
+if (
+  !inFrame &&
+  !navigator.userAgent.includes("Firefox") &&
+  localStorage.getItem("ab") === "true"
+) {
+  const popup = open("about:blank", "_blank");
+    if (!popup || popup.closed) {
+      alert(
+        "Please allow popups for this site. Doing so will allow us to open the site in a about:blank tab and preventing this site from showing up in your history. You can turn this off in the site settings.",
+      );
+    } else {
+      const doc = popup.document;
+      const iframe = doc.createElement("iframe");
+      const style = iframe.style;
+      const link = doc.createElement("link");
+
+      const name = localStorage.getItem("name") || "My Drive - Google Drive";
+      const icon =
+        localStorage.getItem("icon") ||
+        "https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png";
+
+      doc.title = name;
+      link.rel = "icon";
+      link.href = icon;
+
+      iframe.src = location.href;
+      style.position = "fixed";
+      style.top = style.bottom = style.left = style.right = 0;
+      style.border = style.outline = "none";
+      style.width = style.height = "100%";
+
+      doc.head.appendChild(link);
+      doc.body.appendChild(iframe);
+
+      const pLink = localStorage.getItem(encodeURI("pLink")) || getRandomUrl();
+      location.replace(pLink);
+
+      const script = doc.createElement("script");
+      script.textContent = `
+      window.onbeforeunload = function (event) {
+        const confirmationMessage = 'Leave Site?';
+        (event || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+      };
+    `;
+      doc.head.appendChild(script);
+    }
+}
+
   // --- LETHAL IMPORTS ---
   import {
     setTransport,
@@ -35,7 +99,7 @@ import "../styles.css";
 
   // --- INIT ---
   const form = document.getElementById("form")
-  const addressInput = document.getElementById("address")
+  const input = document.getElementById("address")
   let search =
     localStorage.getItem("search-engine") ||
     "https://search.brave.com/search?q=%s"
@@ -60,7 +124,7 @@ import "../styles.css";
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const address = addressInput.value;
+  const address = input.value;
   const searchEngines = {
     ":search brave": "https://search.brave.com/search?q=%s",
     ":search google": "https://www.google.com/search?q=%s",
@@ -68,9 +132,24 @@ form.addEventListener("submit", async (event) => {
   };
 
   const proxies = {
-    ":setProxy scram": "scram",
+    ":setProxy scram": "scramjet",
     ":setProxy uv": "uv",
   };
+
+  const validThemes = ["mocha", "default", "moon", "dawn", "macchiato", "frappe", "latte"]
+
+  if (address.startsWith(":setTheme ")) {
+    const theme = address.substring(10);
+    if (validThemes.includes(theme)) {
+      localStorage.setItem("theme", theme);
+      document.body.dataset.theme = theme;
+      document.dispatchEvent(new CustomEvent("theme-changed"));
+      alert(`Theme set to: ${theme}`);
+    } else {
+      alert(`Invalid theme. Available themes: ${validThemes.join(", ")}`);
+    }
+    return;
+  }
 
   if (address.startsWith(":setWisp ")) {
     wisp = address.substring(9);
@@ -118,6 +197,10 @@ form.addEventListener("submit", async (event) => {
       alert(`Current Wisp server: ${wisp}`);
       break;
 
+    case ":getTheme":
+      alert(`Current Theme: ${localStorage.getItem("theme") || "default"}`);
+      break;
+
     case ":getTransport":
       alert(`Current Transport: ${transport}`);
       break;
@@ -147,8 +230,19 @@ form.addEventListener("submit", async (event) => {
       break;
 
     case ":stealthmode":
-      alert("you found a secret command! Stealth mode is now enabled.");
-      localStorage.setItem("stealth-mode", "true");
+      if(localStorage.getItem("stealth-mode") !== "false")
+        localStorage.setItem("stealth-mode", "false");
+      else if (localStorage.getItem("stealth-mode") === "false")
+        localStorage.setItem("stealth-mode", "true");
+      alert("You found a secret! Stealth mode toggled!")
+      break;
+
+    case ":aboutblank":
+      if(localStorage.getItem("ab") !== "false")
+        localStorage.setItem("ab", "false");
+      else if (localStorage.getItem("ab") === "false")
+        localStorage.setItem("ab", "true");
+      alert("About Blank toggled!")
       break;
 
     case ":help":
@@ -159,6 +253,18 @@ form.addEventListener("submit", async (event) => {
       }
       break;
 
+    case ":history":
+      if (localStorage.getItem("stealth-mode")) {
+        currentFrame.contentWindow.location.replace("/history");
+      } else {
+        currentFrame.src = "/history";
+      }
+      break;
+
+    case ":q":
+      location.replace("https://classroom.google.com/h");
+      break;
+
     default:
       const urlToLoad = makeURL(address, search);
       const proxiedUrl = await getProxied(urlToLoad);
@@ -167,7 +273,7 @@ form.addEventListener("submit", async (event) => {
       } else {
         currentFrame.src = proxiedUrl;
       }
-      addressInput.value = urlToLoad;
+      input.value = urlToLoad;
       break;
   }
 });
@@ -195,14 +301,14 @@ form.addEventListener("submit", async (event) => {
 
     frame.addEventListener("load", () => {
       let url = decodeURIComponent(
-        currentFrame.contentWindow.location.href.split("/").pop(),
+        currentFrame.contentWindow.location.href.replace(`${location.origin}/${backend}/`, ""),
       )
       let title = currentFrame.contentWindow.document.title
 
       let history = localStorage.getItem("history")
         ? JSON.parse(localStorage.getItem("history"))
         : []
-      history = [...history, { url: url, title: title }]
+      history = [...history, { url: url, title: title, timestamp: new Date().toISOString() }]
       localStorage.setItem("history", JSON.stringify(history))
 
       
@@ -217,11 +323,14 @@ form.addEventListener("submit", async (event) => {
       )
 
       switch(url) {
-        case "help":
-          url = "help.txt"
+        case `${location.origin}/help`:
+          url = "vim://help"
+          break;
+        case `${location.origin}/newtab`:
+          url = "vim://newtab"
           break;
       }
-      addressInput.value = url
+      input.value = url
     })
 
     document.dispatchEvent(
@@ -245,7 +354,7 @@ form.addEventListener("submit", async (event) => {
     currentTab = tabNumber
     currentFrame = document.getElementById(`frame-${tabNumber}`)
 
-    addressInput.value = decodeURIComponent(
+    input.value = decodeURIComponent(
       currentFrame.contentWindow.location.href.split("/").pop(),
     )
 
