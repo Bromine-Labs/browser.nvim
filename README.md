@@ -1,3 +1,3 @@
 # browser.nvim
-a tabbed web proxy with vim inspired commands.
+A tabbed web proxy with vim inspired commands made for the 2025 Nebula Proxathon.
 
