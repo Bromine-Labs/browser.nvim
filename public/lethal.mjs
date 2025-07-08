@@ -11,8 +11,7 @@ const scramjet = new ScramjetController({
     client: "/scram/scramjet.client.js",
     shared: "/scram/scramjet.shared.js",
     sync: "/scram/scramjet.sync.js",
-  },
-  prefix: "/service/scram/",
+  }
 })
 
     scramjet.init()
