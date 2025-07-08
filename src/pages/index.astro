@@ -180,6 +180,23 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
+  if (address.startsWith(":setMark ")) {
+    const shit = address.split(" ");
+    localStorage.setItem(`bookmark-${shit[1]}`, shit[2]);
+    alert(`Set mark ${shit[1]} to page ${shit[2]}`)
+    return;
+  }
+
+  if (address.startsWith(":mark ")) {
+    const shit = address.split(" ");
+      if (localStorage.getItem("stealth-mode")) {
+        currentFrame.contentWindow.location.replace(getProxied(localStorage.getItem(`bookmark-${shit[1]}`)));
+      } else {
+        currentFrame.src = await getProxied(localStorage.getItem(`bookmark-${shit[1]}`));
+      }
+    return;
+  }
+
   switch (address) {
     case ":getWisp":
       alert(`Current Wisp server: ${wisp}`);
