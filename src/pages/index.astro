@@ -165,7 +165,7 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
-  if(address.startsWith(":setCustomSearch")) {
+  if(address.startsWith(":setCustomSearch ")) {
     const customSearch = address.split(" ")[1];
     search = customSearch;
     localStorage.setItem("search-engine", customSearch);
@@ -216,6 +216,10 @@ form.addEventListener("submit", async (event) => {
 
     case ":getTransport":
       alert(`Current Transport: ${transport}`);
+      break;
+    
+    case ":getSearch":
+      alert(`Current search engine: ${search}`);
       break;
 
     case ":getProxy":

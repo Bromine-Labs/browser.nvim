@@ -48,12 +48,24 @@
     "description": "Fetches the current proxy backend, which is either 'uv' or 'scram'"
   },
   {
+    "command": ":setSearch <ddg/google>",
+    "description": "Set the search engine to some shit"
+  },
+  {
+    "command": ":setCustomSearch <https://a.com/search?q=%s>",
+    "description": "Set the search engine to some shit"
+  },
+  {
     "command": ":getTransport ...", 
     "description": "Feteches the current proxy transport, which is either 'epoxy' or 'libcurl'"
   },
   {
     "command": ":getWisp", 
     "description": "Fetches the current wisp server."
+  },
+  {
+    "command": ":getSearch", 
+    "description": "Fetches the current search engine."
   },
   {
     "command": ":getTheme", 
