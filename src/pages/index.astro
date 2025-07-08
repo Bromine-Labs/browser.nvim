@@ -165,6 +165,14 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
+  if(address.startsWith(":setCustomSearch")) {
+    const customSearch = address.split(" ")[1];
+    search = customSearch;
+    localStorage.setItem("search-engine", customSearch);
+    alert("Custom search engine set to: " + customSearch);
+    return;
+  }
+
   if (searchEngines[address]) {
     search = searchEngines[address];
     localStorage.setItem("search-engine", searchEngines[address]);
