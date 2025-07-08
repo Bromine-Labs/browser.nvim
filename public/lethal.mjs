@@ -12,17 +12,7 @@ const scramjet = new ScramjetController({
     shared: "/scram/scramjet.shared.js",
     sync: "/scram/scramjet.sync.js",
   },
-  flags: {
-    serviceworkers: false,
-    syncxhr: false,
-    naiiveRewriter: false,
-    strictRewrites: true,
-    rewriterLogs: false,
-    captureErrors: true,
-    cleanErrors: true,
-    scramitize: false,
-    sourcemaps: true,
-  },
+  prefix: "/service/scram/",
 })
 
     scramjet.init()
@@ -51,6 +41,7 @@ const stockSW = "./ultraworker.js"
 const swAllowedHostnames = ["localhost", "127.0.0.1"]
 
 async function registerSW() {
+
   if (!navigator.serviceWorker) {
     if (
       location.protocol !== "https:" &&

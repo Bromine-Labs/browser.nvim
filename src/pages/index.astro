@@ -5,6 +5,10 @@ import "../styles.css";
 
 <html lang="en">
   <head>
+    <meta name="description" content="a pretty crappy proxy.">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Browser.nvim</title>
     <script is:inline defer>
       document.addEventListener("DOMContentLoaded", () => {
@@ -13,24 +17,8 @@ import "../styles.css";
       window.addEventListener("theme-changed", () => {
         document.body.dataset.theme = localStorage.getItem("theme");
       });
-    </script>
-  </head>
-  <body class="bg-base text-text h-screen w-screen overflow-hidden">
-    <Tabs/>
-
-    <section id="frames"></section>
-      <form id="form" class="absolute bottom-0 left-0 right-0 p-4 bg-surface/80">
-
-          <input
-            spellcheck="false"
-            autocomplete="off"
-            id="address"
-            type="text"
-            placeholder="Search the web freely"
-            class=" w-full focus:outline-none"
-            />
-      </form>
-
+</script>
+<script is:inline defer src="/alu-adblocker.js"></script>
 <script is:inline defer type="module">
 let inFrame;
 
@@ -401,5 +389,22 @@ form.addEventListener("submit", async (event) => {
 
   newTab()
 </script>
+
+  </head>
+  <body class="bg-base text-text h-screen w-screen overflow-hidden">
+    <Tabs/>
+
+    <section id="frames"></section>
+      <form id="form" class="absolute bottom-0 left-0 right-0 p-4 bg-surface/80">
+
+          <input
+            spellcheck="false"
+            autocomplete="off"
+            id="address"
+            type="text"
+            placeholder="Search the web freely"
+            class=" w-full focus:outline-none"
+            />
+      </form>
   </body>
 </html>
