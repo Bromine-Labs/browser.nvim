@@ -1,20 +1,6 @@
 //////////////////////////////
 ///          Init          ///
 //////////////////////////////
-await import("/scram/scramjet.shared.js")
-await import("/scram/scramjet.controller.js")
-
-const scramjet = new ScramjetController({
-  files: {
-    wasm: "/scram/scramjet.wasm.wasm",
-    worker: "/scram/scramjet.worker.js",
-    client: "/scram/scramjet.client.js",
-    shared: "/scram/scramjet.shared.js",
-    sync: "/scram/scramjet.sync.js",
-  }
-})
-
-    scramjet.init()
 import * as BareMux from "https://unpkg.com/@mercuryworkshop/bare-mux@2.1.7/dist/index.mjs"
 
 //////////////////////////////
@@ -40,6 +26,28 @@ const stockSW = "./ultraworker.js"
 const swAllowedHostnames = ["localhost", "127.0.0.1"]
 
 async function registerSW() {
+  await import("/scram/scramjet.all.js");
+  const { ScramjetController } = window.$scramjetLoadController();
+
+  const scramjet = new ScramjetController({
+    files: {
+      wasm: "/scram/scramjet.wasm.wasm",
+      all: "/scram/scramjet.all.js",
+      sync: "/scram/scramjet.sync.js",
+    },
+    flags: {
+      rewriterLogs: false,
+      naiiveRewriter: false,
+      scramitize: false,
+    },
+    siteFlags: {
+      "https://www.google.com/(search|sorry).*": {
+        naiiveRewriter: true,
+      },
+    },
+  });
+
+  scramjet.init();
 
   if (!navigator.serviceWorker) {
     if (
@@ -66,7 +74,7 @@ export function makeURL(
 ) {
   try {
     return new URL(input).toString()
-  } catch (err) {}
+  } catch (err) { }
 
   const url = new URL(`http://${input}`)
   if (url.hostname.includes(".")) return url.toString()
@@ -116,8 +124,6 @@ export async function setProxy(proxy) {
     )
 
     await import("./uv.config.js")
-  } else {
-    import("/scram/scramjet.worker.js")
   }
   proxyOption = proxy
 }

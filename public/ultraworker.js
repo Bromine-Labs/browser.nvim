@@ -3,9 +3,11 @@ importScripts(
 )
 importScripts("uv.config.js")
 importScripts(__uv$config.sw)
-importScripts("/scram/scramjet.shared.js", "/scram/scramjet.worker.js")
 importScripts("/workerware/workerware.js")
 importScripts("/alu-adblocker.js")
+importScripts("/scram/scramjet.all.js");
+
+
 
 if (navigator.userAgent.includes("Firefox")) {
   Object.defineProperty(globalThis, "crossOriginIsolated", {
@@ -14,11 +16,23 @@ if (navigator.userAgent.includes("Firefox")) {
   })
 }
 
-
 const uv = new UVServiceWorker()
-const scramjet = new ScramjetServiceWorker()
-
+const { ScramjetServiceWorker } = $scramjetLoadWorker();
+const scramjet = new ScramjetServiceWorker();
+(async function () {
+        await scramjet.loadConfig();
+})();
 const ww = new WorkerWare({});
+
+
+
+if (navigator.userAgent.includes("Firefox")) {
+    Object.defineProperty(globalThis, "crossOriginIsolated", {
+        value: true,
+        writable: true
+    });
+}
+
 
 ww.use({
   function: self.adblockExt.filterRequest,
@@ -26,26 +40,29 @@ ww.use({
   name: "Adblock",
 });
 
+
 self.addEventListener("install", () => {
   self.skipWaiting()
 })
 
-async function handleReq(event) {
+async function handleRequest(event) {
   let mwResponse = await ww.run(event)();
   if (mwResponse.includes(null)) {
     return;
   }
+  
+  if (scramjet.route(event)) {
+    return scramjet.fetch(event)
+  }
 
-  await scramjet.loadConfig()
 
-  if (scramjet.route(event)) return scramjet.fetch(event)
-
-  if (uv.route(event)) return await uv.fetch(event)
-
+  if (uv.route(event)) return await uv.fetch(event);
+    
   return await fetch(event.request)
-
 }
 
 self.addEventListener("fetch", (event) => {
-  event.respondWith(handleReq(event))
+  event.respondWith(handleRequest(event))
 })
+
+
