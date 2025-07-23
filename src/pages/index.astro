@@ -17,16 +17,8 @@ import "../styles.css";
       window.addEventListener("theme-changed", () => {
         document.body.dataset.theme = localStorage.getItem("theme");
       });
-</script>
-    <script async defer is:inline type="module">
-  // --- LETHAL IMPORTS ---
-  import {
-    setTransport,
-    setWisp,
-    setProxy,
-    makeURL,
-    getProxied,
-  } from "./lethal.mjs"
+    </script>
+    <script async defer is:inline>
 let inFrame;
 
 try {
@@ -83,6 +75,17 @@ if (
     }
 }
 
+    </script>
+    <script async defer is:inline type="module">
+  // --- LETHAL IMPORTS ---
+  import {
+    setTransport,
+    setWisp,
+    setProxy,
+    makeURL,
+    getProxied,
+  } from "./lethal.mjs"
+
 
 
 
@@ -92,8 +95,8 @@ if (
   let search =
     localStorage.getItem("search-engine") ||
     "https://search.brave.com/search?q=%s"
-  let tabCounter = null
-  let currentTab = null
+  let tabCounter = 1
+  let currentTab = 1
   let currentFrame = document.getElementById(`frame-${currentTab}`)
 
   let backend = localStorage.getItem("proxy-backend") || "scram"
@@ -424,14 +427,15 @@ form.addEventListener("submit", async (event) => {
   window.switchTab = switchTab
   window.closeTab = closeTab
 
-  newTab()
 </script>
 
   </head>
   <body class="bg-base text-text h-screen w-screen overflow-hidden">
     <Tabs/>
 
-    <section id="frames"></section>
+    <section id="frames">
+    <iframe class="w-full h-full border-0 fixed" title="Proxy Frame" src="/newtab" id="frame-1"></iframe>
+    </section>
       <form id="form" class="absolute bottom-0 left-0 right-0 p-4 bg-surface/80">
 
           <input

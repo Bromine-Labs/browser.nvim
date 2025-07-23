@@ -2,12 +2,22 @@
 ---
 
 <div class="flex items-center bg-surface0 border-b border-surface1">
-  <div id="tabs" class="flex-1 flex overflow-x-auto scrollbar-hide"></div>
+  <div id="tabs" class="flex-1 flex overflow-x-auto scrollbar-hide">
+    <div class="flex items-center min-w-0 max-w-xs px-4 py-2 border-r border-surface1 cursor-pointer bg-surface1 text-text active" data-tab-id="2"><span class="tab truncate flex-1">1: New Tab</span></div>
+  </div>
 </div>
 
 <script is:inline async defer>
-  let tabs = []
+let tabs = [
+  {
+    "id": 2,
+    "element": {},
+    "title": "New Tab"
+}
+]
   const tabsDiv = document.getElementById("tabs")
+
+  window.tabs = tabs;
 
   function updateTabs() {
     tabs.forEach((tabData, index) => {
