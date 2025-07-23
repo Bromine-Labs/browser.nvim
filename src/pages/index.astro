@@ -339,14 +339,21 @@ form.addEventListener("submit", async (event) => {
         }),
       )
 
-      switch(url) {
-        case `${location.origin}/help`:
+
+    const yourL = new URL(url); // parse the url
+    const pathname = yourL.pathname === "/" 
+      ? "/" 
+      : yourL.pathname.replace(/\/+$/, ""); // normalize
+
+      switch(pathname) {
+        case `/help`:
           url = "vim://help"
           break;
-        case `${location.origin}/newtab`:
+        case `/newtab`:
           url = "vim://newtab"
           break;
       }
+
       input.value = url
     })
 
