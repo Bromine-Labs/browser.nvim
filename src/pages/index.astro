@@ -95,7 +95,7 @@ if (
   let currentTab = null
   let currentFrame = document.getElementById(`frame-${currentTab}`)
 
-  let backend = localStorage.getItem("proxy-backend") || "uv"
+  let backend = localStorage.getItem("proxy-backend") || "scram"
   let wisp = localStorage.getItem("wisp-server") || "wss://anura.pro/"
   let transport = localStorage.getItem("proxy-transport")
 

@@ -19,6 +19,8 @@ const transportOptions = {
     "https://unpkg.com/@mercuryworkshop/libcurl-transport@1.5.0/dist/index.mjs",
 }
 
+let scramjet;
+
 //////////////////////////////
 ///           SW           ///
 //////////////////////////////
@@ -29,7 +31,7 @@ async function registerSW() {
   await import("/scram/scramjet.all.js");
   const { ScramjetController } = window.$scramjetLoadController();
 
-  const scramjet = new ScramjetController({
+  scramjet = new ScramjetController({
     files: {
       wasm: "/scram/scramjet.wasm.wasm",
       all: "/scram/scramjet.all.js",
