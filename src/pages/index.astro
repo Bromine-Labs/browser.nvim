@@ -10,7 +10,7 @@ import "../styles.css";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Browser.nvim</title>
-    <script is:inline defer>
+    <script async is:inline defer>
       document.addEventListener("DOMContentLoaded", () => {
         document.body.dataset.theme = localStorage.getItem("theme");
       });
@@ -18,8 +18,15 @@ import "../styles.css";
         document.body.dataset.theme = localStorage.getItem("theme");
       });
 </script>
-<script is:inline defer src="/alu-adblocker.js"></script>
-<script is:inline defer type="module">
+    <script async defer is:inline type="module">
+  // --- LETHAL IMPORTS ---
+  import {
+    setTransport,
+    setWisp,
+    setProxy,
+    makeURL,
+    getProxied,
+  } from "./lethal.mjs"
 let inFrame;
 
 try {
@@ -76,14 +83,8 @@ if (
     }
 }
 
-  // --- LETHAL IMPORTS ---
-  import {
-    setTransport,
-    setWisp,
-    setProxy,
-    makeURL,
-    getProxied,
-  } from "./lethal.mjs"
+
+
 
   // --- INIT ---
   const form = document.getElementById("form")
@@ -124,17 +125,17 @@ form.addEventListener("submit", async (event) => {
     ":setProxy uv": "uv",
   };
 
-  const validThemes = ["mocha", "default", "moon", "dawn", "macchiato", "frappe", "latte"]
+  const realthings = ["mocha", "default", "moon", "dawn", "macchiato", "frappe", "latte"]
 
   if (address.startsWith(":setTheme ")) {
     const theme = address.substring(10);
-    if (validThemes.includes(theme)) {
+    if (realthings.includes(theme)) {
       localStorage.setItem("theme", theme);
       document.body.dataset.theme = theme;
       document.dispatchEvent(new CustomEvent("theme-changed"));
       alert(`Theme set to: ${theme}`);
     } else {
-      alert(`Invalid theme. Available themes: ${validThemes.join(", ")}`);
+      alert(`Invalid theme. Available themes: ${realthings.join(", ")}`);
     }
     return;
   }
