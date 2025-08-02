@@ -1,6 +1,15 @@
 ---
 import Tabs from "../components/Tabs.astro";
 import "../styles.css";
+
+import commandsJ from '../commands.json';
+
+interface Command {
+  command: string;
+  description: string;
+}
+
+const commands: Command[] = commandsJ as Command[];
 ---
 
 <html lang="en">
@@ -18,7 +27,7 @@ import "../styles.css";
         document.body.dataset.theme = localStorage.getItem("theme");
       });
     </script>
-    <script async defer is:inline>
+    <script>
 let inFrame;
 
 try {
@@ -76,7 +85,7 @@ if (
 }
 
     </script>
-    <script async defer is:inline type="module">
+    <script define:vars={{ commandsJJ: commands }} async defer is:inline type="module">
   // --- LETHAL IMPORTS ---
   import {
     setTransport,
@@ -260,7 +269,7 @@ form.addEventListener("submit", async (event) => {
         localStorage.setItem("stealth-mode", "false");
       else if (localStorage.getItem("stealth-mode") === "false")
         localStorage.setItem("stealth-mode", "true");
-      alert("You found a secret! Stealth mode toggled!")
+      alert("Stealth mode toggled!")
       break;
 
     case ":aboutBlank":
@@ -442,6 +451,13 @@ newTab()
     <section id="frames">
     </section>
       <form id="form" class="absolute bottom-0 left-0 right-0 p-4 bg-surface/10">
+<div
+  id="suggestions-container"
+        class="bg-overlay/80 relative w-100 rounded-md shadow-lg z-30 hidden"
+  style="bottom: 100%; left: 0;"
+>
+  <ul id="suggestions-list" class="divide-y divide-muted"></ul>
+</div>
 
           <input
             spellcheck="false"
@@ -452,5 +468,69 @@ newTab()
             class=" w-full focus:outline-none"
             />
       </form>
+<script is:inline>
+  const input = document.getElementById("address");
+  const suggestionsContainer = document.getElementById("suggestions-container");
+  const suggestionsList = document.getElementById("suggestions-list");
+
+  let commands = [];
+
+  fetch("/commands.json")
+    .then((response) => response.json())
+    .then((data) => {
+      commands = data;
+    });
+
+  input.addEventListener("input", () => {
+    const value = input.value.toLowerCase();
+    if (value.startsWith(":")) {
+      const filteredCommands = commands.filter((command) =>
+        command.command.toLowerCase().startsWith(value)
+      );
+      showSuggestions(filteredCommands);
+    } else {
+      hideSuggestions();
+    }
+  });
+
+  function showSuggestions(suggestions) {
+    suggestionsList.innerHTML = "";
+    if (suggestions.length === 0) {
+      hideSuggestions();
+      return;
+    }
+    const maxSuggestions = 5;
+    let suggestionsCounter = 0;
+    suggestions.forEach((suggestion) => {
+      if(suggestionsCounter !== maxSuggestions){
+      
+      const li = document.createElement("li");
+        li.classList.add("p-2", "cursor-pointer");
+      li.innerHTML = `
+        <span class="font-bold">${suggestion.command}</span>
+        <span class="text-sm text-muted">${suggestion.description}</span>
+      `;
+      li.addEventListener("click", () => {
+        input.value = suggestion.command;
+        hideSuggestions();
+      });
+        suggestionsList.appendChild(li);
+        
+        suggestionsCounter++;
+      }
+    });
+    suggestionsContainer.classList.remove("hidden");
+  }
+
+  function hideSuggestions() {
+    suggestionsContainer.classList.add("hidden");
+  }
+
+  document.addEventListener("click", (event) => {
+    if (!suggestionsContainer.contains(event.target) && event.target !== input) {
+      hideSuggestions();
+    }
+  });
+</script>
   </body>
 </html>

@@ -1,15 +1,14 @@
 
 ---
 import "../styles.css";
-// shut up this isnt ai i just couldnt think of a good name
-import commandsData from '../commands.json';
+import commandsJ from '../commands.json';
 
 interface Command {
   command: string;
   description: string;
 }
 
-const commands: Command[] = commandsData as Command[];
+const commands: Command[] = commandsJ as Command[];
 ---
 
 <html lang="en">
@@ -37,7 +36,7 @@ const commands: Command[] = commandsData as Command[];
     <h2 class="text-2xl font-semibold mb-4 mt-6">Commands</h2>
     <ul class="list-none p-0">
       {commands.map((cmd) => (
-        <li class="mb-2 flex items-baseline">
+        <li id={cmd.command.split(" ")[0]} class="mb-2 flex items-baseline">
           <strong class="mr-2 min-w-[100px] inline-block">{cmd.command}</strong>
           <span class="">- {cmd.description}</span>
         </li>
