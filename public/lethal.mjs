@@ -18,20 +18,15 @@ const transportOptions = {
   libcurl:
     "https://unpkg.com/@mercuryworkshop/libcurl-transport@1.5.0/dist/index.mjs",
 }
+    await import(
+      "https://unpkg.com/@titaniumnetwork-dev/ultraviolet@3.2.10/dist/uv.bundle.js"
+    )
 
-let scramjet;
-
-//////////////////////////////
-///           SW           ///
-//////////////////////////////
-const stockSW = "./ultraworker.js"
-const swAllowedHostnames = ["localhost", "127.0.0.1"]
-
-async function registerSW() {
+    await import("./uv.config.js")
   await import("/scram/scramjet.all.js");
   const { ScramjetController } = window.$scramjetLoadController();
 
-  scramjet = new ScramjetController({
+  const scramjet = new ScramjetController({
     files: {
       wasm: "/scram/scramjet.wasm.wasm",
       all: "/scram/scramjet.all.js",
@@ -50,6 +45,13 @@ async function registerSW() {
   });
 
   scramjet.init();
+//////////////////////////////
+///           SW           ///
+//////////////////////////////
+const stockSW = "./ultraworker.js"
+const swAllowedHostnames = ["localhost", "127.0.0.1"]
+
+async function registerSW() {
 
   if (!navigator.serviceWorker) {
     if (
@@ -120,13 +122,6 @@ export function getWisp() {
 
 export async function setProxy(proxy) {
   console.log(`lethal.js: Setting proxy backend to ${proxy}`)
-  if (proxy === "uv") {
-    await import(
-      "https://unpkg.com/@titaniumnetwork-dev/ultraviolet@3.2.10/dist/uv.bundle.js"
-    )
-
-    await import("./uv.config.js")
-  }
   proxyOption = proxy
 }
 
