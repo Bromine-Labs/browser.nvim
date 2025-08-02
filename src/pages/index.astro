@@ -470,8 +470,8 @@ newTab()
       </form>
 <script is:inline>
   const input = document.getElementById("address");
-  const suggestionsContainer = document.getElementById("suggestions-container");
-  const suggestionsList = document.getElementById("suggestions-list");
+  const suggBox = document.getElementById("suggestions-container");
+  const suggList = document.getElementById("suggestions-list");
 
   let commands = [];
 
@@ -487,16 +487,16 @@ newTab()
       const filteredCommands = commands.filter((command) =>
         command.command.toLowerCase().startsWith(value)
       );
-      showSuggestions(filteredCommands);
+      showSugg(filteredCommands);
     } else {
-      hideSuggestions();
+      hideSugg();
     }
   });
 
-  function showSuggestions(suggestions) {
-    suggestionsList.innerHTML = "";
+  function showSugg(suggestions) {
+    suggList.innerHTML = "";
     if (suggestions.length === 0) {
-      hideSuggestions();
+      hideSugg();
       return;
     }
     const maxSuggestions = 5;
@@ -512,23 +512,23 @@ newTab()
       `;
       li.addEventListener("click", () => {
         input.value = suggestion.command;
-        hideSuggestions();
+        hideSugg();
       });
-        suggestionsList.appendChild(li);
+        suggList.appendChild(li);
         
         suggestionsCounter++;
       }
     });
-    suggestionsContainer.classList.remove("hidden");
+    suggBox.classList.remove("hidden");
   }
 
-  function hideSuggestions() {
-    suggestionsContainer.classList.add("hidden");
+  function hideSugg() {
+    suggBox.classList.add("hidden");
   }
 
   document.addEventListener("click", (event) => {
     if (!suggestionsContainer.contains(event.target) && event.target !== input) {
-      hideSuggestions();
+      hideSugg();
     }
   });
 </script>
