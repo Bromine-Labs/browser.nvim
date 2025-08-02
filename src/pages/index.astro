@@ -113,6 +113,11 @@ if (
 
   // --- EVENTS ---
 
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+      document.getElementById(`frame-currentTab`).contentWindow.focus()
+  }
+});
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
