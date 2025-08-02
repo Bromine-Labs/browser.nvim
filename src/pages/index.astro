@@ -95,8 +95,8 @@ if (
   let search =
     localStorage.getItem("search-engine") ||
     "https://search.brave.com/search?q=%s"
-  let tabCounter = 1
-  let currentTab = 1
+  let tabCounter;
+  let currentTab;
   let currentFrame = document.getElementById(`frame-${currentTab}`)
 
   let backend = localStorage.getItem("proxy-backend") || "scram"
