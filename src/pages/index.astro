@@ -160,7 +160,7 @@ form.addEventListener("submit", async (event) => {
   }
 
   if (address.startsWith(":switchTab ")) {
-    const tabNumber = parseInt(address.substring(12));
+    const tabNumber = address.split(" ")[1];
     if (isNaN(tabNumber) === false) {
       switchTab(tabNumber);
     } else {
