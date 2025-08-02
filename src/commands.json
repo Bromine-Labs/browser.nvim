@@ -29,7 +29,7 @@
   },
   {
     "command": "setTheme <theme>",
-    "description": "Set's the theme!"
+    "description": "Set's the theme! to mocha, default, moon, dawn, macchiato, frappe, latte"
   },
   {
     "command": ":setProxy ...",
