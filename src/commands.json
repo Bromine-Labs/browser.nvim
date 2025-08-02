@@ -1,6 +1,6 @@
 [
   {
-    "command": ":newtab",
+    "command": ":newTab",
     "description": "Open a new tab"
   },
   {
@@ -8,7 +8,7 @@
     "description": "Switch to the tab with the given number"
   },
   {
-    "command": ":closetab",
+    "command": ":closeTab",
     "description": "Close the current tab"
   },
   {
@@ -72,11 +72,19 @@
     "description": "Fetches the current theme."
   },
   {
-    "command": ":aboutblank",
+    "command": ":aboutBlank",
     "description": "Toggles about blank on/off"
   },
   {
     "command": ":help",
     "description": "Auto-magically sends you to this help manual"
+  },
+  {
+    "command": ":setMark <character>",
+    "description": "Sets a bookmark"
+  },
+  {
+    "command": ":mark <character>",
+    "description": "Teleports you to that bookmark"
   }
 ]
