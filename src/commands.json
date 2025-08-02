@@ -21,15 +21,15 @@
   },
   {
     "command": ":history",
-    "description": "Show's browser history"
+    "description": "Shows browser history"
   },
   {
     "command": ":reload",
     "description": "Reload the page"
   },
   {
-    "command": "setTheme <theme>",
-    "description": "Set's the theme! to mocha, default, moon, dawn, macchiato, frappe, latte"
+    "command": ":setTheme <theme>",
+    "description": "Sets the theme! to mocha, default, moon, dawn, macchiato, frappe, latte"
   },
   {
     "command": ":setProxy ...",
