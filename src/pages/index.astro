@@ -193,9 +193,9 @@ form.addEventListener("submit", async (event) => {
   }
 
   if (address.startsWith(":setMark ")) {
-    const shit = address.split(" ");
-    localStorage.setItem(`bookmark-${shit[1]}`, shit[2]);
-    alert(`Set mark ${shit[1]} to page ${shit[2]}`)
+    const bred = address.split(" ");
+    localStorage.setItem(`bookmark-${bred[1]}`, bred[2]);
+    alert(`Set mark ${bred[1]} to page ${bred[2]}`)
     return;
   }
 
