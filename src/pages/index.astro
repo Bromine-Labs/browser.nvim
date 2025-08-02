@@ -242,15 +242,15 @@ form.addEventListener("submit", async (event) => {
       currentFrame.contentWindow.location.reload();
       break;
 
-    case ":newtab":
+    case ":newTab":
       newTab();
       break;
 
-    case ":closetab":
+    case ":closeTab":
       closeTab(currentTab);
       break;
 
-    case ":stealthmode":
+    case ":stealthMode":
       if(localStorage.getItem("stealth-mode") !== "false")
         localStorage.setItem("stealth-mode", "false");
       else if (localStorage.getItem("stealth-mode") === "false")
@@ -258,7 +258,7 @@ form.addEventListener("submit", async (event) => {
       alert("You found a secret! Stealth mode toggled!")
       break;
 
-    case ":aboutblank":
+    case ":aboutBlank":
       if(localStorage.getItem("ab") !== "false")
         localStorage.setItem("ab", "false");
       else if (localStorage.getItem("ab") === "false")
