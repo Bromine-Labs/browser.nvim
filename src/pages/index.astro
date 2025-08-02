@@ -427,6 +427,7 @@ form.addEventListener("submit", async (event) => {
   window.switchTab = switchTab
   window.closeTab = closeTab
 
+newTab()
 </script>
 
   </head>
@@ -434,7 +435,6 @@ form.addEventListener("submit", async (event) => {
     <Tabs/>
 
     <section id="frames">
-    <iframe class="w-full h-full border-0 fixed" title="Proxy Frame" src="/newtab" id="frame-1"></iframe>
     </section>
       <form id="form" class="absolute bottom-0 left-0 right-0 p-4 bg-surface/80">
 
