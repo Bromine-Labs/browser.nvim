@@ -49,11 +49,11 @@
   },
   {
     "command": ":setSearch <ddg/google>",
-    "description": "Set the search engine to some shit"
+    "description": "Set the search engine to some "
   },
   {
     "command": ":setCustomSearch <https://a.com/search?q=%s>",
-    "description": "Set the search engine to some shit"
+    "description": "Set the search engine to some "
   },
   {
     "command": ":getTransport ...", 
