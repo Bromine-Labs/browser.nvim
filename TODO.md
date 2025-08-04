@@ -1,2 +1,11 @@
 # TODO
-- [ ] colon focuses input. IMPOSSIBLE
+
+## Important
+- [ ] colon focuses input. IMPOSSIBLE(i think)
+
+
+## In Progress
+
+## Not Started
+
+## Done
