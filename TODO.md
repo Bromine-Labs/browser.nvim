@@ -1,7 +1,7 @@
 # TODO
 
 ## Important
-- [ ] colon focuses input. IMPOSSIBLE(i think)
+* [ ] colon focuses input. IMPOSSIBLE(i think)
 
 
 ## In Progress
