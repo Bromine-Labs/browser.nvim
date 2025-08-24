@@ -235,7 +235,7 @@ form.addEventListener("submit", async (event) => {
     case ":getTransport":
       alert(`Current Transport: ${transport}`);
       break;
-    
+
     case ":getSearch":
       alert(`Current search engine: ${search}`);
       break;
@@ -334,7 +334,18 @@ form.addEventListener("submit", async (event) => {
     switchTab(tabCounter)
 
 
+
+
+
     frame.addEventListener("load", () => {
+      const doc = frame.contentWindow.document;
+
+      doc.addEventListener('keydown', function(e) {
+          if (e.key === ':') {
+              window.top.document.getElementById("address").focus();
+          }
+      });
+
       let url = decodeURIComponent(
         currentFrame.contentWindow.location.href.replace(`${location.origin}/${backend}/`, ""),
       )
@@ -346,7 +357,7 @@ form.addEventListener("submit", async (event) => {
       history = [...history, { url: url, title: title, timestamp: new Date().toISOString() }]
       localStorage.setItem("history", JSON.stringify(history))
 
-      
+
       document.dispatchEvent(
         new CustomEvent("url-changed", {
           detail: {
@@ -359,8 +370,8 @@ form.addEventListener("submit", async (event) => {
 
 
     const yourL = new URL(url); // parse the url
-    const pathname = yourL.pathname === "/" 
-      ? "/" 
+    const pathname = yourL.pathname === "/"
+      ? "/"
       : yourL.pathname.replace(/\/+$/, ""); // normalize
 
       switch(pathname) {
@@ -442,6 +453,12 @@ form.addEventListener("submit", async (event) => {
   window.closeTab = closeTab
 
 newTab()
+
+window.addEventListener('keydown', function(e) {
+          if (e.key === ':') {
+              window.top.document.getElementById("address").focus();
+          }
+      });
 </script>
 
   </head>
@@ -503,7 +520,7 @@ newTab()
     let suggestionsCounter = 0;
     suggestions.forEach((suggestion) => {
       if(suggestionsCounter !== maxSuggestions){
-      
+
       const li = document.createElement("li");
         li.classList.add("p-2", "cursor-pointer");
       li.innerHTML = `
@@ -515,7 +532,7 @@ newTab()
         hideSugg();
       });
         suggList.appendChild(li);
-        
+
         suggestionsCounter++;
       }
     });
@@ -527,7 +544,7 @@ newTab()
   }
 
   document.addEventListener("click", (event) => {
-    if (!suggestionsContainer.contains(event.target) && event.target !== input) {
+    if (!suggBox.contains(event.target) && event.target !== input) {
       hideSugg();
     }
   });
